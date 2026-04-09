@@ -13,7 +13,7 @@ const knightMovesList = [
 
 function knightMoves([start, end]) {
   const visitedSquares = [];
-  if (!isValidSquare(start), !isValidSquare(end)) {
+  if (!isValidSquare(start) || !isValidSquare(end)) {
     throw new Error("Invalid squares as input")
   }
 }
