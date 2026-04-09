@@ -19,30 +19,42 @@ function knightMoves([start, end]) {
     return [start];
   }
   const visitedSquares = [start];
-  const squareQueue = [start];
+  const squareQueue = [new Node(start, null)];
   while (squareQueue.length > 0) {
     const square = squareQueue.shift();
     for (const move of knightMovesList) {
-      const newSquare = square.map((num, i) => num + move[i]);
+      const newSquare = new Node(square.square.map((num, i) => num + move[i]), square);
       // if the newSquare IS the end position, ...
-      if (arraysEqual(newSquare, end)) {
-        console.log(newSquare);
-        return;
+      if (arraysEqual(newSquare.square, end)) {
+        let path = [];
+        let current = newSquare;
+        while (current) {
+          path.push(current.square);
+          current = current.parent;
+        }
+        path.reverse();
+        return path;
       }
       if (
-        isValidSquare(newSquare) &&
+        isValidSquare(newSquare.square) &&
         // and if the new square isn't contained inside of visitedSquares, ...
         !visitedSquares.some((visitedSquare) =>
-          arraysEqual(visitedSquare, newSquare),
+          arraysEqual(visitedSquare, newSquare.square),
         )
       ) {
-        visitedSquares.push(newSquare);
+        visitedSquares.push(newSquare.square);
         squareQueue.push(newSquare);
-        console.log(newSquare);
       } else {
         continue;
       }
     }
+  }
+}
+
+class Node {
+  constructor(square, parent) {
+    this.square = square;
+    this.parent = parent;
   }
 }
 
